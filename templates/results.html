@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1>Anime Search Results</h1>
+<ul>
+    {% for ani in anime %}
+    <li>{{ ani.title }}
+        {{ ani.score }} <br>
+        <img src="{{ ani.images.jpg.image_url}}">
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}
