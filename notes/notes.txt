@@ -42,3 +42,109 @@ genre
 
 cleanup:
 - scroller
+
+                        <!-- <div class="anime-scroller snaps-inline">
+                            {% for ani in seasonal_ani %}
+                            <a href="{{ ani.url }}" target="_blank">
+                                <div class="anime-card">
+                                    <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="anime-poster">
+                                    <div class="card-content">
+                                        <h4>{{ ani.title }}</h4>
+                                        <p class="card-info"></p>
+                                    </div>
+                                </div>
+                            </a>
+                            {% endfor %}
+                            <div class="anime-card">
+                                <p>click here to see all seasonal anime</p>
+                            </div>
+                        </div> -->
+
+def anime_pages(category):
+    all_data = []
+    url = f"{JIKAN_BASE_URL}"
+    params = {}
+    if category == 'seasonal':
+        url += '/seasons/now?sfw'
+
+    response = requests.get(url, params=params)
+    results = response.json()
+    total_pages = results['pagination']['last_visible_page']
+
+    for page in range(1, total_pages + 1):
+        params['page'] = page
+        response2 = requests.get(url, params=params)
+        results2 = response2.json()
+        all_data.extend(results2)
+
+    return all_data
+
+website css
+- https://www.youtube.com/watch?v=ldwlOzRvYOU
+
+flask + deployment
+- https://www.freecodecamp.org/news/how-to-build-a-web-application-using-flask-and-deploy-it-to-the-cloud-3551c985e492/
+- https://api-ninjas.com/api
+
+live search python
+- https://tutorial101.blogspot.com/2021/01/python-flask-live-data-search-using.html
+
+app responsive-ness
+- https://www.youtube.com/watch?v=J6uam9jEmDU&t=14s
+
+python flask movie app
+- https://www.youtube.com/watch?v=kcuQu8dsKfc
+
+virtual environment
+- python =m venv virtualenv-name
+- source name/bin/activate
+
+anime profile site - similar to virtual stock trade
+- search for anime
+- save anime to watch-list
+    --> currently watching
+    --> on hold
+    --> dropped
+- keep track of episodes
+    - if currently airing, keep track of current episode + release date
+- main page:
+    - anime of the season
+- dark + light mode
+- pages:
+    - index (if not signed in):
+        - little opener describing website:
+            - search and find out new anime or sign in and save/keep track of your watch-list
+        - display anime of the season + random all-time top anime
+    - index (when signed in):
+        - show your list - if no list --> show everything else from above page - jinja
+    - search:
+        - either have search option in a new page or just show results of the search from search bar here
+        - search by title, genre
+    - anime listing page:
+        - title, genre, release time, rating, popularity, description, picture, video
+        - actors/actresses/studio?
+        - recommended/related
+        - save to listing
+    - login
+    - sign up
+    - profile page:
+        - your list + can remove others
+        - tracking - how far in anime --> not started/currently watching/on hold/dropped
+
+
+- steps:
+    - home page
+        - grid of anime - by season + top
+    - search
+        - search grid
+        - search filters
+        - search pages
+        - live search bar
+    - anime page
+        - display the anime listing
+    - logging in + signing up
+        - look back at virtual stock cs50 to see how to make accounts
+    - index
+        - adding user list onto home page
+    - profile page
+        - list of shows + tracking
