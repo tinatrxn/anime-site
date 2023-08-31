@@ -2,15 +2,119 @@
 <html>
 <head>
     <title>Anime Search</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script src="{{ url_for('static', filename='js/index.js') }}"></script> -->
+
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://unpkg.com/open-props"/>
+    <!-- <script>
+        $(document).ready(function() {
+        load_data();
+
+        function load_data(query) {
+        $.ajax({
+            url:"/livesearch",
+            method:"POST",
+            data:{query:query},
+            success:function(data) {
+                $('#result').html(data);
+                $("#result").append(data.htmlresponse);
+                }
+            });
+        }
+        $('#search_text').keyup(function() {
+            var search = $(this).val();
+            if (search != '') {
+                load_data(search);
+            } else {
+                load_data();
+                }
+            });
+        });
+    </script> -->
 </head>
 <body>
     <h1>Anime Search</h1>
     <form action="/search" method="post">
-        <input type="text" name="query" placeholder="Enter an anime title">
+        <input type="text" name="query" placeholder="Enter an anime title" id="search_text">
         <input type="submit" value="Search">
     </form>
+    {% block livesearch %}
+
+    {% endblock livesearch %}
+
+    <div id="result"></div>
 
     {% block content %}
+        <div class="index-container container-fluid">
+            <div class="row">
+                <div class="col-9">
+                    <section class="anime-container container-fluid">
+                        <div class="anime-scroller snaps-inline">
+                            {% for ani in seasonal_ani %}
+                            <a href="{{ ani.url }}" target="_blank">
+                                <div class="anime-card">
+                                    <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="anime-poster">
+                                    <div class="card-content">
+                                        <h4>{{ ani.title }}</h4>
+                                        <p class="card-info"></p>
+                                    </div>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <div class="pagination">
+                            {% for i in range(1, total_pages + 1) %}
+                            <a href="{{ url_for('index', page=i) }}" class="page-link">{{ i }}</a>
+                            {% endfor %}
+                        </div>
+                    </section>
+                </div>
+                <div class="col-3">
+                    <section class="top-container px-4">
+                        <div class="">
+                            <div class="top-col">
+                                <h3>Top Anime on Air</h3>
+                                {% for ani in top_ani %}
+                                <a href="{{ ani.url }}" target="_blank">
+                                    <div class="row top-card">
+                                        <div class="col-lg-2">
+                                            <img src="{{ ani.images.jpg.small_image_url}}" alt="anime poster" class="top-poster">
+                                        </div>
+                                        <div class="card-content col">
+                                            <h4>{{ ani.title }}</h4>
+                                            <p class="card-info">{{ ani.score }}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                {% endfor %}
+                            </div>
+                            <div class="top-col">
+                                <h3>Top Random Genres - {{ random_genre['name'] }}</h3>
+                                {% for ani in top_genre %}
+                                <a href="{{ ani.url }}" target="_blank">
+                                    <div class="row top-card">
+                                        <div class="col-lg-2">
+                                            <img src="{{ ani.images.jpg.small_image_url}}" alt="anime poster" class="top-poster">
+                                        </div>
+                                        <div class="card-content col">
+                                            <h4>{{ ani.title }}</h4>
+                                            <p class="card-info">{{ ani.score }}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
 
     {% endblock content %}
 </body>
