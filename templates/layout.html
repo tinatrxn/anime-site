@@ -2,13 +2,16 @@
 <html>
 <head>
     <title>Anime Search</title>
+    <link rel="icon" type="image/x-icon" href="/static/pics/hamtaro.png">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <script src="{{ url_for('static', filename='js/index.js') }}"></script> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Thasadith:wght@700&display=swap" rel="stylesheet">
 
-    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://unpkg.com/open-props"/>
@@ -39,11 +42,36 @@
     </script> -->
 </head>
 <body>
-    <h1>Anime Search</h1>
-    <form action="/search" method="post">
-        <input type="text" name="query" placeholder="Enter an anime title" id="search_text">
-        <input type="submit" value="Search">
-    </form>
+    <div class="anime-navbar">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a href="/" class="navbar-brand">
+                    <img src="/static/pics/hamtaro.png" alt="logo" width="40" height="40">
+                    nyanime
+                </a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item active">
+                            <a href="#" class="nav-link active" aria-current="page">home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">about</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search" action="/search">
+                        <input class="form-control me-2 search-box" type="text" placeholder="Enter an anime title" aria-label="Search" name="query">
+                        <input type="submit" value="Search" class="btn btn-outline-success">
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="sub-header">
+        an anime database to easily discover your next watch-list items! ✧*.◟(ˊᗨˋ)◞.*✧
+    </div>
     {% block livesearch %}
 
     {% endblock livesearch %}
@@ -52,59 +80,81 @@
 
     {% block content %}
         <div class="index-container container-fluid">
-            <div class="row">
-                <div class="col-9">
+            <div class="row" id="seasonal-top">
+                <div class="col-lg-9" id="seasonal">
                     <section class="anime-container container-fluid">
+                        <div class="row index-title">
+                            <div class="col-auto me-auto">
+                                <h2>Season of: Summer 2023</h2>
+                            </div>
+                            <div class="col-auto">
+                                <div class="pagination">
+                                    <a href="{{ url_for('index', page=prev_page) }}">
+                                        <img src="https://www.svgrepo.com/show/305142/arrow-ios-back.svg" alt="left arrow" width="50" height="30">
+                                    </a>
+                                    {{ current_page }}
+                                    <a href="{{ url_for('index', page=next_page) }}">
+                                        <img src="https://www.svgrepo.com/show/305143/arrow-ios-forward.svg" alt="right arrow" width="50" height="30">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="anime-scroller snaps-inline">
                             {% for ani in seasonal_ani %}
-                            <a href="{{ ani.url }}" target="_blank">
-                                <div class="anime-card">
-                                    <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="anime-poster">
-                                    <div class="card-content">
-                                        <h4>{{ ani.title }}</h4>
-                                        <p class="card-info"></p>
+                            <div class="anime-card">
+                                <a href="{{ ani.url }}" target="_blank">
+                                    <div class="poster-stacked">
+                                        <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="anime-poster">
+                                        <div class="ani-info">
+                                            &#x1F31F; {{ ani.score }}
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                            {% endfor %}
-                        </div>
-                        <div class="pagination">
-                            {% for i in range(1, total_pages + 1) %}
-                            <a href="{{ url_for('index', page=i) }}" class="page-link">{{ i }}</a>
+                                    <div class="poster-content">
+                                        <h4 class="ani-title">{{ ani.title }} </h4>
+                                        <div class="poster-genres">
+                                            {% for genre in ani.genres %}
+                                                <p>{{ genre.name }}</p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
                             {% endfor %}
                         </div>
                     </section>
                 </div>
-                <div class="col-3">
+                <div class="col col-lg-3" id="tops">
                     <section class="top-container px-4">
-                        <div class="">
+                        <div class="tops">
+                            <h2>Top Anime on Air</h2>
                             <div class="top-col">
-                                <h3>Top Anime on Air</h3>
                                 {% for ani in top_ani %}
                                 <a href="{{ ani.url }}" target="_blank">
                                     <div class="row top-card">
-                                        <div class="col-lg-2">
-                                            <img src="{{ ani.images.jpg.small_image_url}}" alt="anime poster" class="top-poster">
+                                        <div class="col-2 col-lg-2">
+                                            <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="top-poster">
                                         </div>
-                                        <div class="card-content col">
+                                        <div class="top-content col-10">
                                             <h4>{{ ani.title }}</h4>
-                                            <p class="card-info">{{ ani.score }}</p>
+                                            &#x1F31F; {{ ani.score }}
                                         </div>
                                     </div>
                                 </a>
                                 {% endfor %}
                             </div>
+                        </div>
+                        <div class="tops">
+                            <h2>Top Random Genre: {{ random_genre['name'] }}</h2>
                             <div class="top-col">
-                                <h3>Top Random Genres - {{ random_genre['name'] }}</h3>
                                 {% for ani in top_genre %}
                                 <a href="{{ ani.url }}" target="_blank">
                                     <div class="row top-card">
-                                        <div class="col-lg-2">
-                                            <img src="{{ ani.images.jpg.small_image_url}}" alt="anime poster" class="top-poster">
+                                        <div class="col-2 col-lg-2">
+                                            <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="top-poster">
                                         </div>
-                                        <div class="card-content col">
+                                        <div class="top-content col-10">
                                             <h4>{{ ani.title }}</h4>
-                                            <p class="card-info">{{ ani.score }}</p>
+                                            &#x1F31F; {{ ani.score }}
                                         </div>
                                     </div>
                                 </a>

@@ -43,41 +43,6 @@ genre
 cleanup:
 - scroller
 
-                        <!-- <div class="anime-scroller snaps-inline">
-                            {% for ani in seasonal_ani %}
-                            <a href="{{ ani.url }}" target="_blank">
-                                <div class="anime-card">
-                                    <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="anime-poster">
-                                    <div class="card-content">
-                                        <h4>{{ ani.title }}</h4>
-                                        <p class="card-info"></p>
-                                    </div>
-                                </div>
-                            </a>
-                            {% endfor %}
-                            <div class="anime-card">
-                                <p>click here to see all seasonal anime</p>
-                            </div>
-                        </div> -->
-
-def anime_pages(category):
-    all_data = []
-    url = f"{JIKAN_BASE_URL}"
-    params = {}
-    if category == 'seasonal':
-        url += '/seasons/now?sfw'
-
-    response = requests.get(url, params=params)
-    results = response.json()
-    total_pages = results['pagination']['last_visible_page']
-
-    for page in range(1, total_pages + 1):
-        params['page'] = page
-        response2 = requests.get(url, params=params)
-        results2 = response2.json()
-        all_data.extend(results2)
-
-    return all_data
 
 website css
 - https://www.youtube.com/watch?v=ldwlOzRvYOU
@@ -94,6 +59,8 @@ app responsive-ness
 
 python flask movie app
 - https://www.youtube.com/watch?v=kcuQu8dsKfc
+
+https://stackoverflow.com/questions/6335681/how-do-i-get-the-latest-version-of-my-code
 
 virtual environment
 - python =m venv virtualenv-name
@@ -135,6 +102,7 @@ anime profile site - similar to virtual stock trade
 - steps:
     - home page
         - grid of anime - by season + top
+        - on hover --> show synopsis
     - search
         - search grid
         - search filters
@@ -148,3 +116,6 @@ anime profile site - similar to virtual stock trade
         - adding user list onto home page
     - profile page
         - list of shows + tracking
+
+**
+- accent colour

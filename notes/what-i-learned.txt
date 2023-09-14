@@ -1,0 +1,6 @@
+server-side caching
+- using cache.cached to cache api calls - so i dont have to repeatedly call it
+- saves data in memory
+
+what i want to learn
+- client-side caching

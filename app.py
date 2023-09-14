@@ -1,9 +1,17 @@
 from flask import Flask, render_template, request, jsonify
-
+from flask_caching import Cache
 import requests, random
+
+config = {
+    "DEBUG": True,
+    "CACHE_TYPE": 'simple',
+    "CACHE_DEFAULT_TIMEOUT": 300
+}
 
 app = Flask(__name__)
 app.static_folder = 'static'
+app.config.from_mapping(config)
+cache = Cache(app)
 
 JIKAN_BASE_URL = "https://api.jikan.moe/v4"
 
@@ -20,41 +28,25 @@ def index_anime(category, page):
         url += '/anime?&order_by=score&sort=desc&sfw&limit=10'
         params['genres'] = category
 
-    headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
+    # headers = {
+    #     'Accept': 'application/json',
+    #     'Content-Type': 'application/json'
+    # }
 
-    response = requests.get(url, params=params, headers=headers)
+    response = requests.get(url, params=params)
     results = response.json()
     return results
 
-# def anime_pages(category):
-#     all_data = []
-#     url = f"{JIKAN_BASE_URL}"
-#     params = {}
-#     if category == 'seasonal':
-#         url += '/seasons/now?sfw'
-
-#     response = requests.get(url, params=params)
-#     results = response.json()
-#     total_pages = results['pagination']['last_visible_page']
-
-#     for page in range(2, 4):
-#         url = f"{JIKAN_BASE_URL}/seasons/now?sfw&page={page}"
-#         response2 = requests.get(url, params=params)
-#         results2 = response2.json()
-#         all_data.extend(results2['data'])
-
-#     return all_data
 
 @app.route('/')
 def index():
-    top_ani = index_anime('topani', 1)['data']
-    page = request.args.get('page', default=1, type=int)
-    seasonal_ani_data = index_anime('seasonal', page)
+    current_page = request.args.get('page', default=1, type=int)
+    seasonal_ani_data = index_anime('seasonal', current_page)
 
     total_pages = seasonal_ani_data['pagination']['last_visible_page']
+    next_page = current_page + 1 if current_page < total_pages else total_pages
+    prev_page = current_page - 1 if current_page > 1 else 1
+
     seasonal_ani = seasonal_ani_data['data']
 
     genres = [
@@ -79,7 +71,18 @@ def index():
     random_genre = genres[random.randrange(0, len(genres))]
     top_genre = index_anime(random_genre['id'], 1)['data']
 
-    return render_template('layout.html', top_ani=top_ani, seasonal_ani=seasonal_ani, total_pages=total_pages, top_genre=top_genre, random_genre=random_genre)
+    @cache.cached(timeout=600)
+    def cached_anime():
+        url = f'{JIKAN_BASE_URL}/top/anime?filter=airing&sfw=&limit=10'
+        response_cached = requests.get(url)
+        result_cached = response_cached.json()
+        return result_cached['data']
+
+    top_ani = cached_anime()
+
+    return render_template('layout.html', top_ani=top_ani, seasonal_ani=seasonal_ani,
+                           total_pages=total_pages, next_page=next_page, prev_page=prev_page, current_page=current_page,
+                           top_genre=top_genre, random_genre=random_genre)
 
 @app.route('/load_more/<int:page>')
 def load_more(page):
