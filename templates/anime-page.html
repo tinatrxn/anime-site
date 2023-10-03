@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<!-- <div class="loader"></div> -->
+
+<div class="details-container container-fluid">
+    <div class="row details-title">
+        <div class="col-auto me-auto">
+            <p>{{ details.type }} | {{ details.rating }}</p>
+            <h1>{{ details.title  }}</h1>
+            <div class="details-genres">
+                {% for genre in details.genres %}
+                    <button class="btn btn-secondary btn-sm" type="button">
+                        <a href="{{ url_for('index') }}">{{ genre.name }}</a>
+                    </button>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-auto details-numbers">
+            <h4>♡ Score: {{ details.score }} ♡</h4>
+            <h4>♡ Ranking: {{ details.rank }} ♡</h4>
+            <h4>♡ # of Members: {{ details.members }} ♡</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 details-column">
+            <img src="{{ details.images.jpg.large_image_url }}" alt="{{ details }}-poster" class="details-poster">
+            <div class="details-table">
+                <table class="table">
+                    <tr>
+                        <th scope="row">Status</th>
+                        <td>{{ details.status }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Aired</th>
+                        <td>{{ details.aired.string }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"># of Episodes Out</th>
+                        <td>{{ latest_episode }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Studio</th>
+                        {% if details.studios != '¯_(ツ)_/¯' %}
+                            <td>{{ details.studios[0].name }}</td>
+                        {% else %}
+                            <td>{{ details.studios }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr class="no-bottom-border">
+                        <th scope="row">Demographic</th>
+                        {% if details.demographics != '¯_(ツ)_/¯' %}
+                            <td>{{ details.demographics[0].name }}</td>
+                        {% else %}
+                            <td>{{ details.demographics }}</td>
+                        {% endif %}
+                    </tr>
+                  </table>
+            </div>
+        </div>
+        <div class="col-lg-9 container-fluid">
+            <div class="row justify-content-between details-main">
+                <div class="col-xl-8">
+                    <div class="details-card">
+                        <h4>Synopsis</h4>
+                        {{ details.synopsis }}
+                    </div>
+                    <div class="details-table">
+                        <h4>Relations</h4>
+                        {% if details.relations != '¯_(ツ)_/¯' %}
+                            <table class="table">
+                                {% for relation in details.relations %}
+                                    <tr>
+                                        {% if relation.relation == 'Adaptation' %}
+                                            <th scope="row">{{ relation.relation }} (Manga)</th>
+                                            <td>
+                                                <a href="{{ relation.entry[0].url }}" target="_blank">{{ relation.entry[0].name }}</a>
+                                            </td>
+                                        {% else %}
+                                            <th scope="row">{{ relation.relation }}</th>
+                                            <td>
+                                                <a href="{{ url_for('details', animeid=relation.entry[0].mal_id) }}">{{ relation.entry[0].name }}</a>
+                                                {% if relation.entry|length > 1 %}
+                                                    {% for entry in relation.entry[1:] %}
+                                                        ,  <a href="{{ url_for('details', animeid=entry.mal_id) }}">{{ entry.name }}</a>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% else %}
+                            {{ details.relations }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="details-card video-div">
+                        <h4>Teaser</h4>
+                        {% if details.trailer.embed_url == None %}
+                            <p>¯_(ツ)_/¯</p>
+                        {% else %}
+                            <iframe src="{{ details.trailer.embed_url[:-11] }}" class="teaser-video"></iframe>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="details-card">
+                <h4>Recommended</h4>
+                {% if recommendations %}
+                    <div class="details-scroller snaps-inline">
+                        {% for recom in recommendations %}
+                            <div class="recommend-card hover-card">
+                                <a href="{{ url_for('details', animeid=recom.entry.mal_id) }}">
+                                    <div class="poster-stacked">
+                                        <img src="{{ recom.entry.images.jpg.image_url}}" alt="anime poster" class="anime-poster">
+                                        <div class="ani-info">
+                                            {{ recom.entry.title }}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    ¯_(ツ)_/¯
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

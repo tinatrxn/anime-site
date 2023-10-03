@@ -40,6 +40,81 @@ genre
         {'id': 42, 'name': 'Seinen'},
     ]
 
+genres
+- 1 = action
+- 2 = adventure
+- 5 = avant garde
+- 46 = award winning
+- 28 = boys love
+- 4 = Comedy
+- 8 = drama
+- 10 = fantasy
+- 26 = girls love
+- 47 = gourmet
+- 14 = horror
+- 7 = mystery
+- 22 = romance
+- 24 = sci-fi
+- 36 = slice of life
+- 30 = sports
+- 37 = supernatural
+- 41 = suspense
+
+- 50 = adults cast
+- 51 = anthropomorphic
+- 53 = childcare
+- 54 = combat sports
+- 81 = cross-dressing
+- 55 = delinquents
+- 39 = detective
+- 56 = educational
+- 57 = gag humor
+- 58 = gore
+- 35 = harem
+- 59 = high stakes games
+- 13 = historical
+- 60 = idols (female)
+- 61 = idols (male)
+- 62 = isekai
+- 63 = iyashikei
+- 64 = love polygon
+- 66 = mahou shoujo
+- 17 = martial arts
+- 18 = mecha
+- 67 = medical
+- 38 = military
+- 19 = music
+- 6 = mythology
+- 68 = organized crime
+- 69 = otaku culture
+- 20 = parody
+- 70 = performing arts
+- 71 = pets
+- 40 = psychological
+- 3 = racing
+- 72 = reincarnation
+- 73 = reverse harem
+- 74 = romantic subtext
+- 21 = samurai
+- 23 = school
+- 75 = showbiz
+- 29 = space
+- 11 = strategy game
+- 31 = super power
+- 76 = survival
+- 77 = team sports
+- 78 = time travel
+- 32 = vampire
+- 79 = video agme
+- 80 = visual arts
+- 48 = workplace
+- 43 = josei
+- 15 = kids
+- 42 = seinen
+- 25 = shoujo
+- 27 = shounen
+
+
 cleanup:
 - scroller
 
@@ -116,6 +191,18 @@ anime profile site - similar to virtual stock trade
         - adding user list onto home page
     - profile page
         - list of shows + tracking
+    - adding anime to favourites/list
 
 **
-- accent colour
+- loader
+- save filter form
+- click on genres --> shows top in that genre
+**
+- sessions https://www.youtube.com/watch?v=iIhAfX4iek0
+- ratelimit https://pypi.org/project/ratelimit/
+
+
+
+notes
+- upper vs lower case ?
+- ordering with null values (null gets placed higher)

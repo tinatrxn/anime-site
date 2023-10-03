@@ -4,6 +4,8 @@
     <title>Anime Search</title>
     <link rel="icon" type="image/x-icon" href="/static/pics/hamtaro.png">
 
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,46 +15,55 @@
     <link href="https://fonts.googleapis.com/css2?family=Thasadith:wght@700&display=swap" rel="stylesheet">
 
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <!-- <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script> -->
 
     <link rel="stylesheet" href="https://unpkg.com/open-props"/>
-    <!-- <script>
-        $(document).ready(function() {
-        load_data();
 
-        function load_data(query) {
-        $.ajax({
-            url:"/livesearch",
-            method:"POST",
-            data:{query:query},
-            success:function(data) {
-                $('#result').html(data);
-                $("#result").append(data.htmlresponse);
-                }
-            });
-        }
-        $('#search_text').keyup(function() {
-            var search = $(this).val();
-            if (search != '') {
-                load_data(search);
-            } else {
-                load_data();
-                }
-            });
+
+    <script>
+        $(window).on('load', function() {
+            $(".loader").fadeOut('1500');
         });
-    </script> -->
+
+        function resetForm() {
+            $('form').trigger('reset');
+        }
+        // $('li').click(function() {
+        //     $(this).css('background-color', '#f3af70 !important');
+        // });
+
+        function loader() {
+            $(".loader").fadeIn('fast', function() {
+                $('.loader').fadeOut(5000);
+            });
+        };
+
+        // $(document).ready(function() {
+        //     $('form').submit(function (event) {
+        //         event.preventDefault();
+
+        //         let searchInput = $('#search').val();
+
+        //         if (searchInput.trim() === "") {
+        //             $('#search').val("");
+        //         };
+        //     });
+        // });
+
+    </script>
 </head>
 <body>
     <div class="anime-navbar">
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navigationbar" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a href="/" class="navbar-brand">
                     <img src="/static/pics/hamtaro.png" alt="logo" width="40" height="40">
                     nyanime
                 </a>
-                <div class="collapse navbar-collapse">
+                <div class="collapse navbar-collapse" id="navigationbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item active">
                             <a href="#" class="nav-link active" aria-current="page">home</a>
@@ -61,10 +72,178 @@
                             <a href="#" class="nav-link">about</a>
                         </li>
                     </ul>
-                    <form class="d-flex" role="search" action="/search">
-                        <input class="form-control me-2 search-box" type="text" placeholder="Enter an anime title" aria-label="Search" name="query">
-                        <input type="submit" value="Search" class="btn btn-outline-success">
-                    </form>
+                    <div class="nav-search">
+                        <form class="d-flex" role="search" action="/search" method="post">
+                            <input autocomplete="off" class="form-control me-2 search-box" type="text" placeholder="enter an anime title" name="query">
+                            <input type="submit" value="search" class="btn btn-outline-success">
+                        </form>
+                        <a href=".advanced-search" data-bs-toggle="modal" data-bs-target="#exampleModal">advanced search</a>
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h1 class="modal-title fs-5" id="exampleModalLabel">advanced search</h1>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form role="search" action="/search" method="post">
+                                        <div class="mb-3">
+                                            <input autocomplete="off" class="form-control me-2 search-box" type="text" placeholder="enter an anime title" name="query">
+                                        </div>
+                                        <label for="type" class="form-label">type of media</label>
+                                        <div class="mb-3">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="type" id="inlineRadio1" value="tv">
+                                                <label class="form-check-label" for="inlineRadio1">tv</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="type" id="inlineRadio2" value="movie">
+                                                <label class="form-check-label" for="inlineRadio2">movie</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="type" id="inlineRadio3" value="ova">
+                                                <label class="form-check-label" for="inlineRadio3">ova</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="type" id="inlineRadio4" value="special">
+                                                <label class="form-check-label" for="inlineRadio4">special</label>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <div class="col-auto me-auto">
+                                                <label for="min-score" class="form-label">minimum score</label>
+                                                <select name="min_score" class="form-select" aria-label="minimum score select">
+                                                    <option value="">score</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-auto">
+                                                <label for="status" class="form-label">airing status</label>
+                                                <select name="status" class="form-select" aria-label="status select">
+                                                    <option value="">status</option>
+                                                    <option value="airing">currently airing</option>
+                                                    <option value="complete">complete</option>
+                                                    <option value="upcoming">upcoming</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <label for="rating" class="form-label">rating</label>
+                                        <div class="mb-3">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="g">
+                                                <label class="form-check-label" for="inlineRadio1">G</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="pg">
+                                                <label class="form-check-label" for="inlineRadio2">PG</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="pg13">
+                                                <label class="form-check-label" for="inlineRadio3">PG-13</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value="r17">
+                                                <label class="form-check-label" for="inlineRadio4">R-17</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="r">
+                                                <label class="form-check-label" for="inlineRadio5">R</label>
+                                            </div>
+                                        </div>
+                                        <label for="genres-include" class="form-label">genres included</label>
+                                        <div class="mb-3 row">
+                                            <div class="col-6 col-md-4">
+                                                <div class="modal-scroll">
+                                                    <div class="genre-label">genres</div>
+                                                    {% for genre in search_genres %}
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="genre-include" name="genre-include" id="inlineCheckbox1" value="{{ genre['id'] }}">
+                                                            <label class="form-check-label" for="inlineCheckbox1">{{ genre['name'] }}</label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-md-4">
+                                                <div class="modal-scroll">
+                                                    <div class="genre-label">themes</div>
+                                                        {% for theme in search_themes %}
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="genre-include" name="genre-include" id="inlineCheckbox1" value="{{ theme['id'] }}">
+                                                                <label class="form-check-label" for="inlineCheckbox1">{{ theme['name'] }}</label>
+                                                            </div>
+                                                        {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-md-4">
+                                                <div class="modal-scroll">
+                                                    <div class="genre-label">demographics</div>
+                                                        {% for demographic in search_demographics %}
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="genre-include" name="genre-include" id="inlineCheckbox1" value="{{ demographic['id'] }}">
+                                                                <label class="form-check-label" for="inlineCheckbox1">{{ demographic['name'] }}</label>
+                                                            </div>
+                                                        {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <label for="genres-exclude" class="form-label">genres excluded</label>
+                                        <div class="mb-3 row">
+                                            <div class="col-6 col-md-4">
+                                                <div class="modal-scroll">
+                                                    <div class="genre-label">genres</div>
+                                                        {% for genre in search_genres %}
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="genre-exclude" name="genre-exclude" id="inlineCheckbox1" value="{{ genre['id'] }}">
+                                                                <label class="form-check-label" for="inlineCheckbox1">{{ genre['name'] }}</label>
+                                                            </div>
+                                                        {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-md-4">
+                                                <div class="modal-scroll">
+                                                    <div class="genre-label">themes</div>
+                                                        {% for theme in search_themes %}
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="genre-exclude" name="genre-exclude" id="inlineCheckbox1" value="{{ theme['id'] }}">
+                                                                <label class="form-check-label" for="inlineCheckbox1">{{ theme['name'] }}</label>
+                                                            </div>
+                                                        {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-md-4">
+                                                <div class="modal-scroll">
+                                                    <div class="genre-label">demographics</div>
+                                                        {% for demographic in search_demographics %}
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="genre-exclude" name="genre-exclude" id="inlineCheckbox1" value="{{ demographic['id'] }}">
+                                                                <label class="form-check-label" for="inlineCheckbox1">{{ demographic['name'] }}</label>
+                                                            </div>
+                                                        {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="resetForm()">clear</button>
+                                            <input type="submit" value="search" class="btn btn-outline-success">
+                                        </div>
+                                    </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -72,55 +251,88 @@
     <div class="sub-header">
         an anime database to easily discover your next watch-list items! ✧*.◟(ˊᗨˋ)◞.*✧
     </div>
-    {% block livesearch %}
-
-    {% endblock livesearch %}
-
-    <div id="result"></div>
 
     {% block content %}
-        <div class="index-container container-fluid">
+
+    <!-- <div class="loader"></div> -->
+
+        <div class="index-container container-fluid" id="index-container">
             <div class="row" id="seasonal-top">
                 <div class="col-lg-9" id="seasonal">
                     <section class="anime-container container-fluid">
                         <div class="row index-title">
                             <div class="col-auto me-auto">
-                                <h2>Season of: Summer 2023</h2>
+                                <h2>Season of: {{ seasonal_ani[0].season.capitalize() }} {{ seasonal_ani[0].year }}</h2>
                             </div>
                             <div class="col-auto">
                                 <div class="pagination">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Pages
+                                          </button>
+                                        <ul class="dropdown-menu">
+                                            {% for i in range(1, (total_pages + 1)) %}
+                                                <li><a class="dropdown-item" href="{{ url_for('index', page=i) }}">Page {{ i }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                      </div>
                                     <a href="{{ url_for('index', page=prev_page) }}">
                                         <img src="https://www.svgrepo.com/show/305142/arrow-ios-back.svg" alt="left arrow" width="50" height="30">
                                     </a>
-                                    {{ current_page }}
+                                    {{ current_page }}/{{ total_pages }}
                                     <a href="{{ url_for('index', page=next_page) }}">
                                         <img src="https://www.svgrepo.com/show/305143/arrow-ios-forward.svg" alt="right arrow" width="50" height="30">
                                     </a>
                                 </div>
                             </div>
                         </div>
-                        <div class="anime-scroller snaps-inline">
-                            {% for ani in seasonal_ani %}
-                            <div class="anime-card">
-                                <a href="{{ ani.url }}" target="_blank">
-                                    <div class="poster-stacked">
-                                        <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="anime-poster">
-                                        <div class="ani-info">
-                                            &#x1F31F; {{ ani.score }}
+                        {% if seasonal_ani|length < 5 %}
+                            <div class="anime-scroller-small snaps-inline">
+                                {% for ani in seasonal_ani %}
+                                <div class="anime-card hover-card" onclick="loader()">
+                                    <a href="{{ url_for('details', animeid=ani.mal_id) }}">
+                                        <div class="poster-stacked">
+                                            <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="anime-poster">
+                                            <div class="ani-info">
+                                                &#x1F31F; {{ ani.score }}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="poster-content">
-                                        <h4 class="ani-title">{{ ani.title }} </h4>
-                                        <div class="poster-genres">
-                                            {% for genre in ani.genres %}
-                                                <p>{{ genre.name }}</p>
-                                            {% endfor %}
+                                        <div class="poster-content">
+                                            <h4 class="ani-title">{{ ani.title }} </h4>
+                                            <div class="poster-genres">
+                                                {% for genre in ani.genres %}
+                                                    <p>{{ genre.name }}</p>
+                                                {% endfor %}
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
-                        </div>
+                        {% else %}
+                            <div class="anime-scroller snaps-inline">
+                                {% for ani in seasonal_ani %}
+                                <div class="anime-card hover-card" onclick="loader()">
+                                    <a href="{{ url_for('details', animeid=ani.mal_id) }}">
+                                        <div class="poster-stacked">
+                                            <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="anime-poster">
+                                            <div class="ani-info">
+                                                &#x1F31F; {{ ani.score }}
+                                            </div>
+                                        </div>
+                                        <div class="poster-content">
+                                            <h4 class="ani-title">{{ ani.title }} </h4>
+                                            <div class="poster-genres">
+                                                {% for genre in ani.genres %}
+                                                    <p>{{ genre.name }}</p>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </section>
                 </div>
                 <div class="col col-lg-3" id="tops">
@@ -129,10 +341,10 @@
                             <h2>Top Anime on Air</h2>
                             <div class="top-col">
                                 {% for ani in top_ani %}
-                                <a href="{{ ani.url }}" target="_blank">
-                                    <div class="row top-card">
+                                <a href="{{ url_for('details', animeid=ani.mal_id) }}">
+                                    <div class="row top-card hover-card">
                                         <div class="col-2 col-lg-2">
-                                            <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="top-poster">
+                                            <img src="{{ ani.images.jpg.image_url }}" alt="anime poster" class="top-poster">
                                         </div>
                                         <div class="top-content col-10">
                                             <h4>{{ ani.title }}</h4>
@@ -147,8 +359,8 @@
                             <h2>Top Random Genre: {{ random_genre['name'] }}</h2>
                             <div class="top-col">
                                 {% for ani in top_genre %}
-                                <a href="{{ ani.url }}" target="_blank">
-                                    <div class="row top-card">
+                                <a href="{{ url_for('details', animeid=ani.mal_id) }}">
+                                    <div class="row top-card hover-card">
                                         <div class="col-2 col-lg-2">
                                             <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="top-poster">
                                         </div>
@@ -165,7 +377,7 @@
                 </div>
             </div>
         </div>
-
     {% endblock content %}
+
 </body>
 </html>

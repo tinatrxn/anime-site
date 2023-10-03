@@ -2,5 +2,16 @@ server-side caching
 - using cache.cached to cache api calls - so i dont have to repeatedly call it
 - saves data in memory
 
+flask sessions
+- quick access of info between pages on website
+- temporary - saved on server (not client)
+- way to pass stuff around our server
+- ** use session to save favourites!!!
+
+reaching search via POST and GET
+- was stuck for so long because i didn't realize that when paginating, the user
+    reaches the page via GET
+- fixed code to get the variables required to search - clear session or continue session
+
 what i want to learn
 - client-side caching
