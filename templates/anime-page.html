@@ -8,19 +8,31 @@
     <div class="row details-title">
         <div class="col-auto me-auto">
             <p>{{ details.type }} | {{ details.rating }}</p>
-            <h1>{{ details.title  }}</h1>
+            <div class="title-layout">
+                <h1>{{ details.title  }}</h1>
+                {% if details.title_english != None %}
+                    {% if details.title != details.title_english %}
+                        <p>{{ details.title_english }}</p>
+                    {% endif %}
+                {% endif %}
+            </div>
             <div class="details-genres">
                 {% for genre in details.genres %}
                     <button class="btn btn-secondary btn-sm" type="button">
-                        <a href="{{ url_for('index') }}">{{ genre.name }}</a>
+                        <a href="{{ url_for('genre_page', id=genre.mal_id) }}">{{ genre.name }}</a>
+                    </button>
+                {% endfor %}
+                {% for theme in details.themes %}
+                    <button class="btn btn-secondary btn-sm" type="button">
+                        <a href="{{ url_for('genre_page', id=theme.mal_id) }}">{{ theme.name }}</a>
                     </button>
                 {% endfor %}
             </div>
         </div>
         <div class="col-auto details-numbers">
             <h4>♡ Score: {{ details.score }} ♡</h4>
-            <h4>♡ Ranking: {{ details.rank }} ♡</h4>
-            <h4>♡ # of Members: {{ details.members }} ♡</h4>
+            <h4>♡ Rank: {{ details.rank }} ♡</h4>
+            <h4>♡ Popularity Rank: {{ details.popularity }} ♡</h4>
         </div>
     </div>
     <div class="row">
@@ -51,7 +63,11 @@
                     <tr class="no-bottom-border">
                         <th scope="row">Demographic</th>
                         {% if details.demographics != '¯_(ツ)_/¯' %}
-                            <td>{{ details.demographics[0].name }}</td>
+                            <td>
+                                <button class="btn btn-secondary btn-sm" type="button">
+                                    <a href="{{ url_for('genre_page', id=details.demographics[0].mal_id, name=details.demographics[0].name) }}">{{ details.demographics[0].name }}</a>
+                                </button>
+                            </td>
                         {% else %}
                             <td>{{ details.demographics }}</td>
                         {% endif %}

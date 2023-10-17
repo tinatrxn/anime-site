@@ -15,41 +15,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Thasadith:wght@700&display=swap" rel="stylesheet">
 
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
-    <!-- <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script> -->
 
     <link rel="stylesheet" href="https://unpkg.com/open-props"/>
 
 
     <script>
-        $(window).on('load', function() {
-            $(".loader").fadeOut('1500');
-        });
-
         function resetForm() {
             $('form').trigger('reset');
-        }
-        // $('li').click(function() {
-        //     $(this).css('background-color', '#f3af70 !important');
-        // });
-
-        function loader() {
-            $(".loader").fadeIn('fast', function() {
-                $('.loader').fadeOut(5000);
-            });
         };
-
-        // $(document).ready(function() {
-        //     $('form').submit(function (event) {
-        //         event.preventDefault();
-
-        //         let searchInput = $('#search').val();
-
-        //         if (searchInput.trim() === "") {
-        //             $('#search').val("");
-        //         };
-        //     });
-        // });
-
     </script>
 </head>
 <body>
@@ -65,11 +38,11 @@
                 </a>
                 <div class="collapse navbar-collapse" id="navigationbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item active">
-                            <a href="#" class="nav-link active" aria-current="page">home</a>
+                        <li class="nav-item">
+                            <a href="{{ url_for('about') }}" class="nav-link">about</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">about</a>
+                            <a href="{{ url_for('genres') }}" class="nav-link">genres</a>
                         </li>
                     </ul>
                     <div class="nav-search">
@@ -116,16 +89,9 @@
                                                 <label for="min-score" class="form-label">minimum score</label>
                                                 <select name="min_score" class="form-select" aria-label="minimum score select">
                                                     <option value="">score</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
-                                                    <option value="7">7</option>
-                                                    <option value="8">8</option>
-                                                    <option value="9">9</option>
-                                                    <option value="10">10</option>
+                                                    {% for i in range(1, 11) %}
+                                                        <option value="{{ i }}">{{ i }}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="col-auto">
@@ -166,7 +132,7 @@
                                             <div class="col-6 col-md-4">
                                                 <div class="modal-scroll">
                                                     <div class="genre-label">genres</div>
-                                                    {% for genre in search_genres %}
+                                                    {% for genre in all_genres[:16] %}
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="checkbox" name="genre-include" name="genre-include" id="inlineCheckbox1" value="{{ genre['id'] }}">
                                                             <label class="form-check-label" for="inlineCheckbox1">{{ genre['name'] }}</label>
@@ -177,7 +143,7 @@
                                             <div class="col-6 col-md-4">
                                                 <div class="modal-scroll">
                                                     <div class="genre-label">themes</div>
-                                                        {% for theme in search_themes %}
+                                                        {% for theme in all_genres[16:63] %}
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox" name="genre-include" name="genre-include" id="inlineCheckbox1" value="{{ theme['id'] }}">
                                                                 <label class="form-check-label" for="inlineCheckbox1">{{ theme['name'] }}</label>
@@ -188,7 +154,7 @@
                                             <div class="col-6 col-md-4">
                                                 <div class="modal-scroll">
                                                     <div class="genre-label">demographics</div>
-                                                        {% for demographic in search_demographics %}
+                                                        {% for demographic in all_genres[63:] %}
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox" name="genre-include" name="genre-include" id="inlineCheckbox1" value="{{ demographic['id'] }}">
                                                                 <label class="form-check-label" for="inlineCheckbox1">{{ demographic['name'] }}</label>
@@ -202,7 +168,7 @@
                                             <div class="col-6 col-md-4">
                                                 <div class="modal-scroll">
                                                     <div class="genre-label">genres</div>
-                                                        {% for genre in search_genres %}
+                                                        {% for genre in all_genres[:16] %}
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox" name="genre-exclude" name="genre-exclude" id="inlineCheckbox1" value="{{ genre['id'] }}">
                                                                 <label class="form-check-label" for="inlineCheckbox1">{{ genre['name'] }}</label>
@@ -213,7 +179,7 @@
                                             <div class="col-6 col-md-4">
                                                 <div class="modal-scroll">
                                                     <div class="genre-label">themes</div>
-                                                        {% for theme in search_themes %}
+                                                        {% for theme in all_genres[16:63] %}
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox" name="genre-exclude" name="genre-exclude" id="inlineCheckbox1" value="{{ theme['id'] }}">
                                                                 <label class="form-check-label" for="inlineCheckbox1">{{ theme['name'] }}</label>
@@ -224,7 +190,7 @@
                                             <div class="col-6 col-md-4">
                                                 <div class="modal-scroll">
                                                     <div class="genre-label">demographics</div>
-                                                        {% for demographic in search_demographics %}
+                                                        {% for demographic in all_genres[63:] %}
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox" name="genre-exclude" name="genre-exclude" id="inlineCheckbox1" value="{{ demographic['id'] }}">
                                                                 <label class="form-check-label" for="inlineCheckbox1">{{ demographic['name'] }}</label>
@@ -253,16 +219,13 @@
     </div>
 
     {% block content %}
-
-    <!-- <div class="loader"></div> -->
-
-        <div class="index-container container-fluid" id="index-container">
+        <div class="index-container container-fluid content" id="index-container">
             <div class="row" id="seasonal-top">
                 <div class="col-lg-9" id="seasonal">
                     <section class="anime-container container-fluid">
                         <div class="row index-title">
                             <div class="col-auto me-auto">
-                                <h2>Season of: {{ seasonal_ani[0].season.capitalize() }} {{ seasonal_ani[0].year }}</h2>
+                                <h1>Season of: Fall 2023</h1>
                             </div>
                             <div class="col-auto">
                                 <div class="pagination">
@@ -289,7 +252,7 @@
                         {% if seasonal_ani|length < 5 %}
                             <div class="anime-scroller-small snaps-inline">
                                 {% for ani in seasonal_ani %}
-                                <div class="anime-card hover-card" onclick="loader()">
+                                <div class="anime-card hover-card">
                                     <a href="{{ url_for('details', animeid=ani.mal_id) }}">
                                         <div class="poster-stacked">
                                             <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="anime-poster">
@@ -312,7 +275,7 @@
                         {% else %}
                             <div class="anime-scroller snaps-inline">
                                 {% for ani in seasonal_ani %}
-                                <div class="anime-card hover-card" onclick="loader()">
+                                <div class="anime-card hover-card">
                                     <a href="{{ url_for('details', animeid=ani.mal_id) }}">
                                         <div class="poster-stacked">
                                             <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="anime-poster">
@@ -326,6 +289,9 @@
                                                 {% for genre in ani.genres %}
                                                     <p>{{ genre.name }}</p>
                                                 {% endfor %}
+                                                {% for theme in ani.themes %}
+                                                    <p>{{ theme.name }}</p>
+                                                {% endfor %}
                                             </div>
                                         </div>
                                     </a>
@@ -338,7 +304,7 @@
                 <div class="col col-lg-3" id="tops">
                     <section class="top-container px-4">
                         <div class="tops">
-                            <h2>Top Anime on Air</h2>
+                            <h1>Top Anime on Air</h1>
                             <div class="top-col">
                                 {% for ani in top_ani %}
                                 <a href="{{ url_for('details', animeid=ani.mal_id) }}">
@@ -356,7 +322,7 @@
                             </div>
                         </div>
                         <div class="tops">
-                            <h2>Top Random Genre: {{ random_genre['name'] }}</h2>
+                            <h1>Top Random Genre: {{ random_genre['name'] }}</h1>
                             <div class="top-col">
                                 {% for ani in top_genre %}
                                 <a href="{{ url_for('details', animeid=ani.mal_id) }}">

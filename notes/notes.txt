@@ -194,9 +194,17 @@ anime profile site - similar to virtual stock trade
     - adding anime to favourites/list
 
 **
-- loader
-- save filter form
-- click on genres --> shows top in that genre
+about page
+- intro of page
+    - myanimelist is ugly and has a lot of details that i don't need
+    - wanted to make it look nicer and straight to the point - no need to look for the info i need
+    - website was build with xyz and data is from the jikan api - link credits
+- notes about website:
+    - index: has top random genres that change every time the page is reloaded
+    - anime-page: if it has "¯_(ツ)_/¯" --> info not available on jikan
+    - genres: descriptions were not in api, copied from myanimelist/made up my own
+    - slow page loading: api rate limit - have to pause/wait in order for program to not crash
+
 **
 - sessions https://www.youtube.com/watch?v=iIhAfX4iek0
 - ratelimit https://pypi.org/project/ratelimit/
@@ -205,4 +213,3 @@ anime profile site - similar to virtual stock trade
 
 notes
 - upper vs lower case ?
-- ordering with null values (null gets placed higher)

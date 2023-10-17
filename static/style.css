@@ -4,6 +4,25 @@
 
 * {
     font-family: 'Thasadith', sans-serif;
+    scrollbar-width: thin;
+    scrollbar-color: #f3af70 #fce0c6;
+}
+
+::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.5em;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #fce0c6 !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #f3af70;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #eb8b31;
 }
 
 html {
@@ -43,10 +62,6 @@ a:hover {
 
 .navbar-collapse li a {
     color: white;
-}
-
-.nav-link.active, .nav-item.active {
-    color: #f3af70 !important;
 }
 
 .nav-search {
@@ -128,7 +143,7 @@ a:hover {
 }
 
 .details-container {
-    width: 95%;
+    width: 97%;
     padding-top: 1rem;
 }
 
@@ -136,12 +151,39 @@ a:hover {
     padding-top: 1rem;
 }
 
-.index-title h2 {
+.top-container {
+    margin-right: 1em;
+    padding-top: 0.5rem;
+}
+
+.results-container {
+    width: 99%;
+    padding-top: 2em;
+}
+
+.about-container {
+    padding-top: 2rem;
+    width: 85%;
+    margin: auto;
+}
+
+.genres-container {
+    padding-top: 2rem;
+    width: 98%;
+    margin: auto;
+}
+
+.genres-container h1 {
+    margin-left: 1rem;
+}
+
+.index-title h1 {
     margin-left: 1rem;
 }
 
 .pagination {
     align-items: center;
+    align-self: center;
     width: 25%;
 }
 
@@ -231,14 +273,14 @@ h4 {
     flex: 0 0 calc(7rem - 20px);
     background: hsla(203, 35%, 75%, 0.438) !important;
     background-color: var(--surface-3);
+    padding-left: 1.5%;
+    padding-right: 1.5%;
     border-radius: var(--radius-2);
     box-shadow: var(--shadow-1);
     font-size: smaller;
+    align-self: center;
 }
 
-.top-container {
-    margin-right: 1em;
-}
 
 .top-col {
     padding-bottom: 3rem;
@@ -274,6 +316,10 @@ h4 {
 
 .next-page, .sort-by {
     margin: auto;
+}
+
+.title-layout p {
+    font-style: italic;
 }
 
 .details-card {
@@ -393,17 +439,35 @@ tr:last-child th, tr:last-child td{
     margin-right: auto;
 }
 
-
-.loader {
-    position: fixed;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    background: url('https://media.tenor.com/FawYo00tBekAAAAC/loading-thinking.gif') 50% 50% no-repeat #D3DCF4;
-    animation: none;
+.genre-description {
+    width: 99%;
+    margin: auto;
+    text-align: center;
+    padding: 1em;
 }
 
+.apology {
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.about {
+    padding-bottom: 1em;
+}
+
+.about-image {
+    margin: auto;
+    align-items: center;
+    align-self: center;
+}
+
+.credits {
+    padding: 3em 0 2em;
+    text-align: center;
+    margin: auto;
+}
 
 @media only screen and (max-width: 700px) {
     .anime-navbar a:active {
@@ -467,6 +531,10 @@ tr:last-child th, tr:last-child td{
         align-content: center;
         justify-content: center;
     }
+    .title-layout {
+        display: block;
+        padding-bottom: 1em;
+    }
     .details-genres {
         align-content: center;
         justify-content: center;
@@ -481,11 +549,33 @@ tr:last-child th, tr:last-child td{
     .recommend-card {
         padding: 0;
     }
+    .sort-by {
+        padding: 0.5em;
+    }
+    .apology > img {
+        width: 90%;
+    }
+    .about-container {
+        width: 95%;
+    }
+    .about img {
+        width: 100%;
+    }
 }
 
 @media only screen and (max-width: 1200px) {
     .details-scroller {
         grid-auto-columns: 28%;
         grid-template-columns: 28%;
+    }
+    .about-container {
+        width: 95%;
+    }
+    .about img {
+        width: 100%;
+    }
+
+    .apology > img {
+        width: 90%;
     }
 }

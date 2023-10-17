@@ -2,93 +2,103 @@
 
 {% block content %}
 
-<section class="anime-container container-fluid">
+<section class="anime-container container-fluid results-container">
     <div class="row index-title">
-        <div class="col-auto me-auto">
-            <div class="row search-filter">
-                <div class="col-auto">
-                    <h2>Search Results for "{{ params['q'] }}"</h2>
+        {% if anime_results|length == 0 %}
+            <div class="apology">
+                <img src="https://media.tenor.com/4oj5ELcX1AoAAAAi/emoji-sanrio.gif" alt="pompompurin sorry">
+                <p>sorry nothing to show with your search :c try searching something else!</p>
+            </div>
+        {% else %}
+            <div class="col-auto me-auto">
+                <div class="row search-filter">
+                    <div class="col-auto">
+                        <h1>Search Results for "{{ params['q'] }}" ({{ results_total }})</h1>
+                    </div>
+                    <div class="col-auto sort-by">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Order By: {{ order_by.capitalize() }}
+                            </button>
+                            <ul class="dropdown-menu">
+                                {% for key, value in orders.items() %}
+                                    {% if key == order_by %}
+                                        <li><a class="dropdown-item active" href="{{ url_for('search', order_by=key) }}">{{ value }}</a></li>
+                                    {% else %}
+                                        <li><a class="dropdown-item" href="{{ url_for('search', order_by=key) }}">{{ value }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% if sort == 'asc' %}
+                        <div class="col-auto sort-by">
+                            <a href="{{ url_for('search', order_by=order_by, sort='desc') }}" class="btn btn-sm btn-outline active" role="button">Descending</a>
+                        </div>
+                        <div class="col-auto sort-by">
+                            <a href="{{ url_for('search', order_by=order_by, sort='asc') }}" class="btn btn-sm btn-outline-primary" role="button">Ascending</a>
+                        </div>
+                    {% else %}
+                        <div class="col-auto sort-by">
+                            <a href="{{ url_for('search', order_by=order_by, sort='desc') }}" class="btn btn-sm" role="button">Descending</a>
+                        </div>
+                        <div class="col-auto sort-by">
+                            <a href="{{ url_for('search', order_by=order_by, sort='asc') }}" class="btn btn-sm active" role="button">Ascending</a>
+                        </div>
+                    {% endif %}
                 </div>
-                <div class="col-auto sort-by">
+            </div>
+            <div class="col-auto">
+                <div class="pagination">
                     <div class="dropdown">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Order By: {{ order_by.capitalize() }}
-                          </button>
+                            Pages
+                        </button>
                         <ul class="dropdown-menu">
-                            {% for key, value in orders.items() %}
-                                {% if key == order_by %}
-                                    <li><a class="dropdown-item active" href="{{ url_for('search', order_by=key) }}">{{ value }}</a></li>
+                            {% for i in range(1, (total_pages + 1)) %}
+                                {% if i == current_page %}
+                                    <li><a class="dropdown-item active" href="{{ url_for('search', page=i, order_by=order_by, sort=sort) }}">Page {{ i }}</a></li>
                                 {% else %}
-                                    <li><a class="dropdown-item" href="{{ url_for('search', order_by=key) }}">{{ value }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('search', page=i, order_by=order_by, sort=sort) }}">Page {{ i }}</a></li>
                                 {% endif %}
                             {% endfor %}
                         </ul>
-                      </div>
+                    </div>
+                    <a href="{{ url_for('search', page=prev_page, order_by=order_by, sort=sort) }}">
+                        <img src="https://www.svgrepo.com/show/305142/arrow-ios-back.svg" alt="left arrow" width="50" height="30">
+                    </a>
+                    {{ current_page }}/{{ total_pages }}
+                    <a href="{{ url_for('search', page=next_page, order_by=order_by, sort=sort) }}">
+                        <img src="https://www.svgrepo.com/show/305143/arrow-ios-forward.svg" alt="right arrow" width="50" height="30">
+                    </a>
                 </div>
-                {% if sort == 'asc' %}
-                    <div class="col-auto sort-by">
-                        <a href="{{ url_for('search', order_by=order_by, sort='desc') }}" class="btn btn-sm btn-outline active" role="button">descending</a>
-                    </div>
-                    <div class="col-auto sort-by">
-                        <a href="{{ url_for('search', order_by=order_by, sort='asc') }}" class="btn btn-sm btn-outline-primary" role="button">ascending</a>
-                    </div>
-                {% else %}
-                    <div class="col-auto sort-by">
-                        <a href="{{ url_for('search', order_by=order_by, sort='desc') }}" class="btn btn-sm" role="button">descending</a>
-                    </div>
-                    <div class="col-auto sort-by">
-                        <a href="{{ url_for('search', order_by=order_by, sort='asc') }}" class="btn btn-sm active" role="button">ascending</a>
-                    </div>
-                {% endif %}
             </div>
         </div>
-        <div class="col-auto">
-            <div class="pagination">
-                <div class="dropdown">
-                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Pages
-                      </button>
-                      <ul class="dropdown-menu">
-                        {% for i in range(1, (total_pages + 1)) %}
-                            {% if i == current_page %}
-                                <li><a class="dropdown-item active" href="{{ url_for('search', page=i, order_by=order_by, sort=sort) }}">Page {{ i }}</a></li>
-                            {% else %}
-                                <li><a class="dropdown-item" href="{{ url_for('search', page=i, order_by=order_by, sort=sort) }}">Page {{ i }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                  </div>
-                <a href="{{ url_for('search', page=prev_page, order_by=order_by, sort=sort) }}">
-                    <img src="https://www.svgrepo.com/show/305142/arrow-ios-back.svg" alt="left arrow" width="50" height="30">
-                </a>
-                {{ current_page }}/{{ total_pages }}
-                <a href="{{ url_for('search', page=next_page, order_by=order_by, sort=sort) }}">
-                    <img src="https://www.svgrepo.com/show/305143/arrow-ios-forward.svg" alt="right arrow" width="50" height="30">
-                </a>
-            </div>
-        </div>
-    </div>
+        {% endif %}
     {% if anime_results|length < 7 %}
-    <div class="anime-scroller-small snaps-inline">
-        {% for ani in anime_results %}
-        <div class="anime-card hover-card">
-            <a href="{{ url_for('details', animeid=ani.mal_id) }}">
-                <div class="poster-stacked">
-                    <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="anime-poster">
-                    <div class="ani-info">
-                        &#x1F31F; {{ ani.score }}
+        <div class="anime-scroller-small snaps-inline">
+            {% for ani in anime_results %}
+            <div class="anime-card hover-card">
+                <a href="{{ url_for('details', animeid=ani.mal_id) }}">
+                    <div class="poster-stacked">
+                        <img src="{{ ani.images.jpg.image_url}}" alt="anime poster" class="anime-poster">
+                        <div class="ani-info">
+                            &#x1F31F; {{ ani.score }}
+                        </div>
                     </div>
-                </div>
-                <div class="poster-content">
-                    <h4 class="ani-title">{{ ani.title }} </h4>
-                    <div class="poster-genres">
-                        {% for genre in ani.genres %}
-                            <p>{{ genre.name }}</p>
-                        {% endfor %}
+                    <div class="poster-content">
+                        <h4 class="ani-title">{{ ani.title }} </h4>
+                        <div class="poster-genres">
+                            {% for genre in ani.genres %}
+                                <p>{{ genre.name }}</p>
+                            {% endfor %}
+                            {% for theme in ani.themes %}
+                                <p>{{ theme.name }}</p>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
         {% endfor %}
     {% else %}
     <div class="anime-scroller snaps-inline">
@@ -106,6 +116,9 @@
                     <div class="poster-genres">
                         {% for genre in ani.genres %}
                             <p>{{ genre.name }}</p>
+                        {% endfor %}
+                        {% for theme in ani.themes %}
+                            <p>{{ theme.name }}</p>
                         {% endfor %}
                     </div>
                 </div>

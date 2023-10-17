@@ -2,58 +2,32 @@
 
 {% block content %}
 
-    <section class="anime-container container-fluid">
-        <div class="row index-title">
-            <div class="col-auto me-auto">
-                <div class="row search-filter">
-                    <div class="col-auto">
-                        <h2>{{ genre }}</h2>
-                    </div>
-                    <div class="col-auto sort-by">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Sort By:
-                              </button>
-                            <ul class="dropdown-menu">
-                                {% for i in range(1, (total_pages + 1)) %}
-                                    {% if i == current_page %}
-                                        <li><a class="dropdown-item active" href="{{ url_for('search', page=i) }}">Page {{ i }}</a></li>
-                                    {% else %}
-                                        <li><a class="dropdown-item" href="{{ url_for('search', page=i) }}">Page {{ i }}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                          </div>
-                    </div>
-                </div>
+<div class="genres-container">
+    <h1>Genres</h1>
+    <div class="anime-scroller">
+        {% for genre in all_genres[:16] %}
+            <div class="details-card">
+                <a href="{{ url_for('genre_page', id=genre.id )}}"> ♡ {{ genre.name.capitalize() }}</a>
             </div>
-            <div class="col-auto">
-                <div class="pagination">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Pages
-                          </button>
-                          <ul class="dropdown-menu">
-                            {% for i in range(1, (total_pages + 1)) %}
-                                {% if i == current_page %}
-                                    <li><a class="dropdown-item active" href="{{ url_for('search', page=i) }}">Page {{ i }}</a></li>
-                                {% else %}
-                                    <li><a class="dropdown-item" href="{{ url_for('search', page=i) }}">Page {{ i }}</a></li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                      </div>
-                    <a href="{{ url_for('search', page=prev_page) }}">
-                        <img src="https://www.svgrepo.com/show/305142/arrow-ios-back.svg" alt="left arrow" width="50" height="30">
-                    </a>
-                    {{ current_page }}/{{ total_pages }}
-                    <a href="{{ url_for('search', page=next_page) }}">
-                        <img src="https://www.svgrepo.com/show/305143/arrow-ios-forward.svg" alt="right arrow" width="50" height="30">
-                    </a>
-                </div>
+        {% endfor %}
+    </div>
+    <h1>Themes</h1>
+    <div class="anime-scroller">
+        {% for theme in all_genres[16:63] %}
+            <div class="details-card">
+                <a href="{{ url_for('genre_page', id=theme.id )}}"> ♡ {{ theme.name.title() }}</a>
             </div>
-        </div>
+        {% endfor %}
+    </div>
+    <h1>Demographics</h1>
+    <div class="anime-scroller">
+        {% for demographic in all_genres[63:] %}
+            <div class="details-card">
+                <a href="{{ url_for('genre_page', id=demographic.id )}}"> ♡ {{ demographic.name.capitalize() }}</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 
-    </section>
 
 {% endblock content %}
