@@ -5,7 +5,6 @@ from ratelimit import limits, sleep_and_retry
 from time import sleep
 import requests, random, asyncio, aiohttp
 
-from helpers import apology
 
 config = {
     "DEBUG": True,
