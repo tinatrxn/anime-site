@@ -1,8 +1,12 @@
 {% extends "layout.html" %}
 
+{% block title %}
+<title>Search Results - nyanime </title>
+{% endblock title %}
+
 {% block content %}
 
-<section class="anime-container container-fluid results-container">
+<section class="container-fluid results-container">
     <div class="row index-title">
         {% if anime_results|length == 0 %}
             <div class="apology">
@@ -10,7 +14,7 @@
                 <p>sorry nothing to show with your search :c try searching something else!</p>
             </div>
         {% else %}
-            <div class="col-auto me-auto">
+            <div class="col-auto me-auto results-title">
                 <div class="row search-filter">
                     <div class="col-auto">
                         <h1>Search Results for "{{ params['q'] }}" ({{ results_total }})</h1>
@@ -48,7 +52,7 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="col-auto">
+            <div class="col-auto pagination-col">
                 <div class="pagination">
                     <div class="dropdown">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

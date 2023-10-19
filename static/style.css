@@ -43,8 +43,13 @@ a:hover {
     color: #b85901;
 }
 
-.navbar {
+.anime-navbar {
     background-color: #17395f;
+    color: white;
+}
+
+.navbar-toggler {
+    background: #FFC389;
 }
 
 .anime-navbar a {
@@ -53,6 +58,10 @@ a:hover {
 
 .anime-navbar a:hover {
     color: #f3af70;
+}
+
+.anime-navbar a:focus {
+    color: #f0a55e !important;
 }
 
 .navbar-brand {
@@ -101,6 +110,20 @@ a:hover {
     background-color: #ce6f16 !important;
 }
 
+#genre-bar {
+    display: none;
+    background: #17395f;
+}
+
+.genre-picker {
+    padding-bottom: 1em;
+    color: black;
+}
+
+.genre-dropdown a:hover {
+    color: black !important;
+}
+
 .modal-content {
     background: #f0f3ff;
 }
@@ -144,11 +167,11 @@ a:hover {
 
 .details-container {
     width: 97%;
-    padding-top: 1rem;
+    padding: 1rem 0 2rem;
 }
 
 .anime-container {
-    padding-top: 1rem;
+    padding: 1rem 0;
 }
 
 .top-container {
@@ -157,24 +180,14 @@ a:hover {
 }
 
 .results-container {
-    width: 99%;
-    padding-top: 2em;
+    width: 98%;
+    padding: 2rem 0;
 }
 
 .about-container {
     padding-top: 2rem;
     width: 85%;
     margin: auto;
-}
-
-.genres-container {
-    padding-top: 2rem;
-    width: 98%;
-    margin: auto;
-}
-
-.genres-container h1 {
-    margin-left: 1rem;
 }
 
 .index-title h1 {
@@ -322,6 +335,11 @@ h4 {
     font-style: italic;
 }
 
+.pagination-col {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
 .details-card {
     background: hsl(0, 0%, 100%, 0.5) !important;
     padding: var(--spacer) var(--size-4);
@@ -386,6 +404,7 @@ tr:last-child th, tr:last-child td{
     justify-self: center;
     align-self: center;
     text-align: center;
+    padding: 0.5em 0;
 }
 
 .details-scroller {
@@ -470,15 +489,15 @@ tr:last-child th, tr:last-child td{
 }
 
 @media only screen and (max-width: 700px) {
-    .anime-navbar a:active {
-        color: #f3af70;
-    }
     .sub-header {
-        padding: 0.8rem 0.8rem;
+        padding: 0.8rem;
+    }
+    .top-container {
+        padding-top: 3rem;
+        margin-right: 0;
     }
     .index-title {
         display: grid;
-        grid-template-rows: 50% 50%;
         text-align: center;
         align-items: center;
         justify-items: center;
@@ -486,7 +505,7 @@ tr:last-child th, tr:last-child td{
         justify-content: center;
         padding-bottom: 1rem;
     }
-    .index-title h2 {
+    .index-title h1 {
         margin-left: 0;
     }
     .anime-scroller, .anime-scroller-small {
@@ -514,16 +533,13 @@ tr:last-child th, tr:last-child td{
     .poster-genres {
         display: none;
     }
-    .top-container {
-        padding-top: 3rem;
-        margin-right: 0;
-    }
     .search-filter {
         display: grid;
-        text-align: center;
-        align-content: center;
-        justify-content: center;
+        margin: auto;
         padding-bottom: 1em;
+    }
+    .results-title {
+        margin: auto;
     }
     .details-title {
         display: grid;
@@ -564,6 +580,9 @@ tr:last-child th, tr:last-child td{
 }
 
 @media only screen and (max-width: 1200px) {
+    .pagination-col {
+        margin: auto;
+    }
     .details-scroller {
         grid-auto-columns: 28%;
         grid-template-columns: 28%;

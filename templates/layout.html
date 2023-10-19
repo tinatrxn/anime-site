@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Anime Search</title>
+    {% block title %}
+    <title>nyanime ⸜(｡˃ ᵕ ˂ )⸝♡</title>
+    {% endblock title %}
     <link rel="icon" type="image/x-icon" href="/static/pics/hamtaro.png">
 
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -23,6 +25,12 @@
         function resetForm() {
             $('form').trigger('reset');
         };
+
+        $(document).ready(function() {
+            $("#genre-nav").click(function() {
+                $("#genre-bar").toggle('slow');
+            });
+        });
     </script>
 </head>
 <body>
@@ -41,8 +49,8 @@
                         <li class="nav-item">
                             <a href="{{ url_for('about') }}" class="nav-link">about</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ url_for('genres') }}" class="nav-link">genres</a>
+                        <li class="nav-item" id="genre-nav">
+                            <a href="#" class="nav-link">genres</a>
                         </li>
                     </ul>
                     <div class="nav-search">
@@ -213,6 +221,48 @@
                 </div>
             </div>
         </nav>
+        <div id="genre-bar">
+            <div class="genre-picker">
+                <ul class="nav justify-content-center">
+                    <li class="nav-item px-2">
+                      <div class="dropdown genre-dropdown">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          genres
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% for genre in all_genres[:16] %}
+                                <li><a class="dropdown-item" href="{{ url_for('genre_page', id=genre.id )}}">{{ genre.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                      </div>
+                    </li>
+                    <li class="nav-item px-2">
+                      <div class="dropdown genre-dropdown">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          themes
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% for theme in all_genres[16:63] %}
+                                <li><a class="dropdown-item" href="{{ url_for('genre_page', id=theme.id )}}">{{ theme.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                      </div>
+                    </li>
+                    <li class="nav-item px-2">
+                      <div class="dropdown genre-dropdown">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          demographics
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% for demographic in all_genres[63:] %}
+                                <li><a class="dropdown-item" href="{{ url_for('genre_page', id=demographic.id )}}">{{ demographic.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                      </div>
+                    </li>
+                  </ul>
+            </div>
+        </div>
     </div>
     <div class="sub-header">
         an anime database to easily discover your next watch-list items! ✧*.◟(ˊᗨˋ)◞.*✧
@@ -227,7 +277,7 @@
                             <div class="col-auto me-auto">
                                 <h1>Season of: Fall 2023</h1>
                             </div>
-                            <div class="col-auto">
+                            <div class="col-auto pagination-col">
                                 <div class="pagination">
                                     <div class="dropdown">
                                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

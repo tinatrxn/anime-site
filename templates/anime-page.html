@@ -1,8 +1,11 @@
 {% extends "layout.html" %}
 
+{% block title %}
+<title>{{ details.title }} - nyanime </title>
+{% endblock title %}
+
 {% block content %}
 
-<!-- <div class="loader"></div> -->
 
 <div class="details-container container-fluid">
     <div class="row details-title">
@@ -30,9 +33,9 @@
             </div>
         </div>
         <div class="col-auto details-numbers">
-            <h4>♡ Score: {{ details.score }} ♡</h4>
-            <h4>♡ Rank: {{ details.rank }} ♡</h4>
-            <h4>♡ Popularity Rank: {{ details.popularity }} ♡</h4>
+            <h4>Score: {{ details.score }}</h4>
+            <h4>Rank: {{ details.rank }}</h4>
+            <h4>Popularity Rank: {{ details.popularity }}</h4>
         </div>
     </div>
     <div class="row">
