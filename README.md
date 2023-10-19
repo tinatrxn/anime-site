@@ -1,2 +1,5 @@
 # anime-site
-A cleaner anime website where users can search for shows and save them to their watchlist. Cut down to only the information I (and some others) want when looking for new things to watch!
+
+Nyanime is a web application build with Flask. Users can browse through anime and have the most necessary details presented to them in a clean fashion.
+
+Check it out on: tranquil-osprey-402417.ue.r.appspot.com! 
