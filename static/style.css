@@ -126,6 +126,7 @@ a:hover {
 
 .modal-content {
     background: #f0f3ff;
+    color: black !important;
 }
 
 .modal-body {
